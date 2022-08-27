@@ -12,9 +12,7 @@
 #include "OpenWeatherMapForecast.h"
 #include "WeatherStationFonts.h"
 #include "WeatherStationImages.h"
-/***************************
- * Begin Settings
- **************************/
+
 // WIFI
 const char* WIFI_SSID = "SSID-parter";
 const char* WIFI_PWD = "doctor13579vitamin24680!";
@@ -35,8 +33,8 @@ const int SDA_PIN = 5; //D3;
 const int SDC_PIN = 4; //D4;
 #endif
 
-String OPEN_WEATHER_MAP_APP_ID = "XXX";
-String OPEN_WEATHER_MAP_LOCATION_ID = "2657896";
+String OPEN_WEATHER_MAP_APP_ID = "83ee1d270f230e640405a19332c2fd61";
+String OPEN_WEATHER_MAP_LOCATION_ID = "665087";
 
 String OPEN_WEATHER_MAP_LANGUAGE = "en";
 const uint8_t MAX_FORECASTS = 4;
@@ -46,11 +44,6 @@ const boolean IS_METRIC = true;
 const String WDAY_NAMES[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 const String MONTH_NAMES[] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
-/***************************
- * End Settings
- **************************/
- // Initialize the oled display for address 0x3c
- // sda-pin=14 and sdc-pin=12
  SSD1306Wire     display(I2C_DISPLAY_ADDRESS, SDA_PIN, SDC_PIN);
  OLEDDisplayUi   ui( &display );
 
@@ -81,7 +74,6 @@ void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
 void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
-
 
 // Add frames
 // this array keeps function pointers to all frames
@@ -198,20 +190,20 @@ void updateData(OLEDDisplay *display) {
   uint8_t allowedHours[] = {12};
   forecastClient.setAllowedHours(allowedHours, sizeof(allowedHours));
   forecastClient.updateForecastsById(forecasts, OPEN_WEATHER_MAP_APP_ID, OPEN_WEATHER_MAP_LOCATION_ID, MAX_FORECASTS);
-
   readyForWeatherUpdate = false;
   drawProgress(display, 100, "Done...");
   delay(1000);
+  drawProgress(display, 100, "Hi there!");
+  delay(3000);
+  drawProgress(display, 100, "I'm Roomie!");
+  delay(5000);
 }
-
-
 
 void drawDateTime(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
   now = time(nullptr);
   struct tm* timeInfo;
   timeInfo = localtime(&now);
   char buff[16];
-
 
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->setFont(ArialMT_Plain_10);
