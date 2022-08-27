@@ -12,6 +12,8 @@
 #include "OpenWeatherMapForecast.h"
 #include "WeatherStationFonts.h"
 #include "WeatherStationImages.h"
+#include "ThingspeakClient.h"
+#include <DHT.h>
 
 // WIFI
 const char* WIFI_SSID = "SSID-parter";
@@ -58,12 +60,19 @@ OpenWeatherMapForecast forecastClient;
 #define DST_SEC         ((DST_MN)*60)
 time_t now;
 
+#define DHTPIN D6    
+#define DHTTYPE DHT11  
+
 // flag changed in the ticker function every 10 minutes
 bool readyForWeatherUpdate = false;
 
 String lastUpdate = "--";
 
 long timeSinceLastWUpdate = 0;
+
+//Thingspeak Settings
+const String THINGSPEAK_CHANNEL_ID = "1843455";
+const String THINGSPEAK_API_READ_KEY = "ZCB5RT7ANFKMJ1WU";
 
 //declaring prototypes
 void drawProgress(OLEDDisplay *display, int percentage, String label);
@@ -74,12 +83,14 @@ void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
 void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
+void drawIndoor(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
+
 
 // Add frames
 // this array keeps function pointers to all frames
 // frames are the single views that slide from right to left
-FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawForecast };
-int numberOfFrames = 3;
+FrameCallback frames[] = {drawIndoor, drawDateTime, drawCurrentWeather, drawForecast };
+int numberOfFrames = 4;
 
 OverlayCallback overlays[] = { drawHeaderOverlay };
 int numberOfOverlays = 1;
@@ -232,7 +243,11 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->drawString(32 + x, 0 + y, currentWeather.iconMeteoCon);
 }
-
+void drawIndoor(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
+  display->setTextAlignment(TEXT_ALIGN_CENTER);
+  display->setFont(ArialMT_Plain_10);
+  display->drawString(64, 10 , "Hi there, I'm Roomie!");
+}
 
 void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
   drawForecastDetails(display, x, y, 0);
