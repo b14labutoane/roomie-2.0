@@ -42,6 +42,8 @@ String OPEN_WEATHER_MAP_LANGUAGE = "en";
 const uint8_t MAX_FORECASTS = 4;
 
 const boolean IS_METRIC = true;
+const boolean IS_METRIX = true;
+
 
 const String WDAY_NAMES[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 const String MONTH_NAMES[] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
@@ -73,6 +75,8 @@ long timeSinceLastWUpdate = 0;
 //Thingspeak Settings
 const String THINGSPEAK_CHANNEL_ID = "1843455";
 const String THINGSPEAK_API_READ_KEY = "ZCB5RT7ANFKMJ1WU";
+
+DHT dht(DHTPIN, DHTTYPE);
 
 //declaring prototypes
 void drawProgress(OLEDDisplay *display, int percentage, String label);
@@ -167,7 +171,51 @@ void loop() {
   if (readyForWeatherUpdate && ui.getUiState()->frameState == FIXED) {
     updateData(&display);
   }
+  // Use WiFiClient class to create TCP connections
+    WiFiClient client;
+    const int httpPort = 80;
+    if (!client.connect(host, httpPort)) {
+      Serial.println("connection failed");
+      return;
+    }
 
+    // read values from the sensor
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature(!IS_METRIC);
+    
+    // We now create a URI for the request
+    String url = "/update?api_key=";
+    url += THINGSPEAK_API_KEY;
+    url += "&field1=";
+    url += String(temperature);
+    url += "&field2=";
+    url += String(humidity);
+    
+    Serial.print("Requesting URL: ");
+    Serial.println(url);
+    
+    // This will send the request to the server
+    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" + 
+                 "Connection: close\r\n\r\n");
+    delay(10);
+    while(!client.available()){
+      delay(100);
+      Serial.print(".");
+    }
+    // Read all the lines of the reply from server and print them to Serial
+    while(client.available()){
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+    }
+    
+    Serial.println();
+    Serial.println("closing connection");
+
+
+  // Go back to sleep. If your sensor is battery powered you might
+  // want to use deep sleep here
+  delay(1000 * UPDATE_INTERVAL_SECONDS);
   int remainingTimeBudget = ui.update();
 
   if (remainingTimeBudget > 0) {
