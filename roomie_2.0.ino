@@ -25,11 +25,10 @@ int rotDreapta=0, rotDreaptaOld=0;
 int spateStanga=0, spateStangaOld=0;
 int spateDreapta=0, spateDreaptaOld=0;
 
-const int stFront = 2;
-const int stBack = 3;
-const int drBack = 4;
-const int drFront = 5;
-const int pirSensor = 6;
+const int stFront = 2;//motor stanga fata
+const int stBack = 3;//motor stanga spate
+const int drBack = 4;//motor dreapta spate
+const int drFront = 5;//motor dreapta fata
 
 void setup() {
         Serial.begin(115200);
@@ -45,28 +44,36 @@ void setup() {
 
         if (!Hid.SetReportParser(0, &Joy))
                 ErrorMessage<uint8_t > (PSTR("SetReportParser"), 1);
+                
+        //setarea pinilor
         pinMode(stFront, OUTPUT);
         pinMode(stBack, OUTPUT);
         pinMode(drBack, OUTPUT);
         pinMode(drFront, OUTPUT);
-        pinMode(pirSensor, INPUT);
-        digitalWrite(6,LOW);
 }
 void butonulApasat(int but){
+      //butonul 1 este "X"
       if(but==1)
         inStanga=1;
+      //butonul 2 este "A"
       if(but==2)
         inSpate=1;
+      //butonul 3 este "B"
       if(but==3)
         inDreapta=1;
+      //butonul 4 este "Y"
       if(but==4)
         inFata=1;
+      //butonul stanga sus 
       if(but==5)
         spateStanga=1;
+      //butonul dreapta sus 
       if(but==6)
         spateDreapta=1;
+      //butonul stanga jos 
       if(but==7)
         rotStanga=1;
+      //butonul dreapta jos
       if(but==8)
         rotDreapta=1;
 }
@@ -89,6 +96,8 @@ void butonulRidicat(int but){
         rotDreapta=0;
 }
 void gata(){
+  //functie care opreste toate motoarele
+  //frana
           Serial.println("stop");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, LOW);  
@@ -96,6 +105,7 @@ void gata(){
           digitalWrite(stBack, LOW);
 }
 void forward(){
+  //functie care misca robotul in fata
           Serial.println("inFata");
           digitalWrite(drFront, HIGH);
           digitalWrite(stFront,HIGH);
@@ -103,6 +113,7 @@ void forward(){
           digitalWrite(stBack, LOW);
 }
 void backwards(){
+  //functie care misca robotul in spate
           Serial.println("inSpate");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, LOW);
@@ -110,6 +121,7 @@ void backwards(){
           digitalWrite(stBack, HIGH);
 }
 void frontRight(){
+  //functie care misca robotul spre dreapta, in fata
           Serial.println("inDreapta");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, HIGH);
@@ -117,6 +129,7 @@ void frontRight(){
           digitalWrite(stBack, LOW);
 }
 void frontLeft(){
+  //functie care misca robotul spre stanga, in fata
           Serial.println("inStanga");
           digitalWrite(drFront, HIGH);
           digitalWrite(stFront, LOW);
@@ -124,6 +137,7 @@ void frontLeft(){
           digitalWrite(stBack, LOW);
 }
 void backRight(){
+  //functie care misca robotul spre dreapta, in spate
           Serial.println("inDreapta");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, LOW);
@@ -131,6 +145,7 @@ void backRight(){
           digitalWrite(stBack, HIGH);
 }
 void backLeft(){
+  //functie care misca robotul spre stanga, in spate
           Serial.println("inStanga");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, LOW);
@@ -138,6 +153,7 @@ void backLeft(){
           digitalWrite(stBack, LOW);
 }
 void rotRight(){
+ //functie care misca robotul in cerc spre dreapta
           Serial.println("rotireDreapta");
           digitalWrite(drFront, LOW);
           digitalWrite(stFront, HIGH);
@@ -145,6 +161,7 @@ void rotRight(){
           digitalWrite(stBack, LOW);
 }
 void rotLeft(){
+ //functie care misca robotul in cerc spre stanga
           Serial.println("rotireStanga");
           digitalWrite(drFront, HIGH);
           digitalWrite(stFront, LOW);
@@ -153,16 +170,6 @@ void rotLeft(){
 }
 void loop() {
         Usb.Task();
-        if(digitalRead(pirSensor)==HIGH){
-          Serial.println("BOO");
-          delay(1000);
-        }
-        else
-        {
-          Serial.println("oF");
-          delay(1000);
-        }
-        
         if(inFata==1 && inFataOld==0) 
         {
           forward();
