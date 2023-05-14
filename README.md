@@ -4,7 +4,7 @@ Roomie is a friendly robot that can help people be more organized and productive
 ```bash
 Hello World!
 ```
-##🫶🫶🫶
+## 🫶🫶🫶
 Roomie is an Arduino robot who’s purpose is to help people with his movement controlled by a Logitech controller and with his cute lights, his small screen and his future developments
 
 
