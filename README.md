@@ -1,5 +1,11 @@
-# roomie-2.0
-Features: 
-- is controlled by a Logitech console; ✅
-- has a lot of leds;
-- weather station; ✅
+# Roomie
+
+Roomie is a friendly robot that can help people be more organized and productive.
+
+```bash
+Hello World!
+```
+## Features
+- movement controlled by a Logitech console
+- a small screen that shows time, date and weather
+- leds
