@@ -1,6 +1,6 @@
 # Roomie🤖
 
-Roomie is a friendly robot that can help people be more organized and productive in a funky way just like the teen that created him.👩🏻‍💻
+Roomie is a friendly robot that can help people be more organized and productive in a funky way just like the teen that created him👩🏻‍💻
 ```bash
 Hello World!
 ```
