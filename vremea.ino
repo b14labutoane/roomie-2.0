@@ -84,14 +84,14 @@ void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
 void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
-void drawIndoor(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
+//void drawIndoor(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 
 
 // Add frames
 // this array keeps function pointers to all frames
 // frames are the single views that slide from right to left
-FrameCallback frames[] = {drawIndoor, drawDateTime, drawCurrentWeather, drawForecast };
-int numberOfFrames = 4;
+FrameCallback frames[] = {/*drawIndoor*/, drawDateTime, drawCurrentWeather, drawForecast };
+int numberOfFrames = 3; //4
 
 OverlayCallback overlays[] = { drawHeaderOverlay };
 int numberOfOverlays = 1;
