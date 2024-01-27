@@ -17,9 +17,9 @@ Roomie is an Arduino robot who’s purpose is to help people with his movement c
 - Arduino Board
 - USB Host Shield
 - ESP8266
-- x3💡
+- 3💡
 - small screen
 - bridge
-- x2 motors
+- 2 motors
 - batteries
 - power bank
