@@ -1,11 +1,11 @@
-#include <usbhid.h> // librarie Arduino pentru UsbHostShield
-#include <hiduniversal.h> // librarie Arduino pentru UsbHostShield
-#include <usbhub.h> // librarie Arduino pentru UsbHostShield 
+#include <usbhid.h> // biblioteca Arduino pentru UsbHostShield
+#include <hiduniversal.h> // biblioteca Arduino pentru UsbHostShield
+#include <usbhub.h> // biblioteca Arduino pentru UsbHostShield 
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
 #endif
 #include <SPI.h>
-#include "hidjoystickrptparser.h" // librarie Arduino pentru UsbHostShield 
+#include "hidjoystickrptparser.h" // biblioteca Arduino pentru UsbHostShield 
 
 // crearea variabilelor necesare conectarii cu joystick-ul
 USB Usb;
