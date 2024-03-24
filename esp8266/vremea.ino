@@ -69,23 +69,6 @@ int melody[] = {
 int durations[] = {
   8, 8, 8,
   2, 2,
-  8, 8, 8, 2, 4,
-  8, 8, 8, 2, 4,
-  8, 8, 8, 2, 8, 8, 8,
-  2, 2,
-  8, 8, 8, 2, 4,
-
-  8, 8, 8, 2, 4,
-  8, 8, 8, 2, 8, 16,
-  4, 8, 8, 8, 8, 8,
-  8, 8, 8, 4, 8, 4, 8, 16,
-  4, 8, 8, 8, 8, 8,
-
-  8, 16, 2, 8, 8,
-  4, 8, 8, 8, 8, 8,
-  8, 8, 8, 4, 8, 4, 8, 16,
-  4, 8, 4, 8, 4, 8, 4, 8,
-  1
 };
 
 // WIFI
@@ -101,10 +84,13 @@ const int UPDATE_INTERVAL_SECS = 10 * 60;  // Update every 10 minutes
 // Setari de display
 const int I2C_DISPLAY_ADDRESS = 0x3c;
 
-// Definirea pinilor
-const int SDA_PIN = 0;
-const int SDC_PIN = 2;
-const int DHT_PIN = 12;
+// Declararea pinilor
+const int trigPin = 5;
+const int echoPin = 4;
+const int buzzer = 14;
+const int SDA_PIN = 0; //display
+const int SDC_PIN = 2; //display
+const int DHT_PIN = 12; //senzor temp
 
 // Id-urile de pe site-ul Open Weather
 String OPEN_WEATHER_MAP_APP_ID = "83ee1d270f230e640405a19332c2fd61";
@@ -156,11 +142,6 @@ int numberOfOverlays = 1;
 // Declararea variabilei senzorului de temperatura
 DHT dht(DHT_PIN, DHTTYPE);
 
-// Declararea pinilor
-const int trigPin = 5;
-const int echoPin = 4;
-const int buzzer = 14;
-
 // Delararea variabilelor
 long duration;
 int distance;
@@ -182,10 +163,10 @@ int ultrasonic() {
 
   // Primeste unda si returneaza viteza sunetului
   duration = pulseIn(echoPin, HIGH);
-
+  //Serial.println(duration);
   // Calculeaza distanta
   distance = duration * 0.034 / 2;
-
+  //Serial.println(distance);
   return distance;
 }
 
@@ -210,7 +191,7 @@ void song() {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(74880);
   Serial.println();
   Serial.println();
   dht.begin();
@@ -256,7 +237,7 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(buzzer, OUTPUT);
-  safetyDistance = 1;
+  safetyDistance = 10;
   noTone(buzzer);
 }
 
@@ -273,6 +254,17 @@ void loop() {
   if (remainingTimeBudget > 0) {
     delay(remainingTimeBudget);
   }
+  int dist = ultrasonic();
+  if (dist <= safetyDistance){
+  //tone(buzzer, 2500);
+  //delay(500);
+  //tone (buzzer, 2500);  
+    song();
+  }
+  else{
+    noTone (buzzer);
+  }
+
 }
 
 // Functie care afiseaza bara de progres
