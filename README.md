@@ -10,7 +10,7 @@ Roomie is an Arduino robot who’s purpose is to help people with his movement c
 
 ## Features🤟
 - movement controlled by a Logitech controller🎮
-- small screen that shows time, date, weather and current weather📺
+- small screen that shows time, date, weather and current weather of the room📺
 - distance sensor that activates a buzzer 🔊
 
 ## Components🎛️
